@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="admin_login" />
+    <update handle="tfa_screen" />
+    <body>
+        <referenceContainer name="login.content">
+            <block class="Magento\Backend\Block\Template" name="content"
+                   template="RedMonks_UserSpecificTwoFactorAuth::rtfa/request_provider.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">RedMonks\UserSpecificTwoFactorAuth\ViewModel\Providers</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

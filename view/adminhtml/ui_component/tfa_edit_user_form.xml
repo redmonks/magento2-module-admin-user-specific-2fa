@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="base_fieldset">
+        <field name="default_provider" component="Magento_Ui/js/form/element/select" formElement="select">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Default Provider</label>
+                <dataScope>default_provider</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="RedMonks\UserSpecificTwoFactorAuth\Model\Sources\Provider"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+</form>

@@ -1,0 +1,34 @@
+<?php
+/** @var \Magento\Backend\Block\Template $block */
+
+$viewModel = $block->getViewModel();
+
+$providers = $viewModel->getAvailableProviders();
+?>
+<form method="post" action="" id="login-form" data-mage-init='{"form": {}, "validation": {}}' autocomplete="off">
+    <fieldset class="admin__fieldset">
+        <legend class="admin__legend">
+            <span><?= $block->escapeHtml(__('2FA Provider:')) ?></span>
+        </legend>
+        <p>Please select your desired 2FA method</p>
+        <br/>
+        <input name="form_key" type="hidden" value="<?= $block->escapeHtmlAttr($block->getFormKey()) ?>" />
+        <div class="admin__field _required field-default_provider">
+            <div class="admin__field-control">
+                <select name="default_provider" class="admin__control-select" data-validate="{required:true}">
+                    <?php foreach($providers as $provider) { ?>
+                        <option value="<?=$provider->getCode()?>"><?=$provider->getName()?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+        <div class="form-actions">
+            <div class="actions">
+                <button
+                    class="action-login action-primary">
+                    <span><?= $block->escapeHtml(__('Submit')) ?></span>
+                </button>
+            </div>
+        </div>
+    </fieldset>
+</form>

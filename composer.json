@@ -1,0 +1,19 @@
+{
+    "name": "redmonks/module-user-specific-two-factor-auth",
+    "description": "Admin user specific two factor authentication module for Magento2",
+    "require": {
+        "magento/module-two-factor-auth": "*",
+        "magento/framework": "*"
+    },
+    "type": "magento2-module",
+    "license": "OSL-3.0",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Magento\\UserSpecificTwoFactorAuth\\": ""
+        }
+    },
+    "version": "1.0.0"
+}

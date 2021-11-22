@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\TwoFactorAuth\Ui\Component\Form\User\DataProvider">
+        <plugin name="redmonks_userspecifictwofactorauth_user_dataprovider" type="RedMonks\UserSpecificTwoFactorAuth\Plugin\UiComponent\UserDataProvider"/>
+    </type>
+    <type name="Magento\TwoFactorAuth\Model\Tfa">
+        <plugin name="redmonks_userspecifictwofactorauth_get_default_providers" type="RedMonks\UserSpecificTwoFactorAuth\Plugin\TwoFactorAuth\ModelTfa"/>
+    </type>
+    <type name="Magento\TwoFactorAuth\Observer\ControllerActionPredispatch">
+        <plugin name="redmonks_userspecifictwofactorauth_before_requestconfig_email" type="RedMonks\UserSpecificTwoFactorAuth\Plugin\TwoFactorAuth\Observer\ControllerActionPredispatch"/>
+    </type>
+</config>
