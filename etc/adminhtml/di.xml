@@ -6,7 +6,4 @@
     <type name="Magento\TwoFactorAuth\Model\Tfa">
         <plugin name="redmonks_userspecifictwofactorauth_get_default_providers" type="RedMonks\UserSpecificTwoFactorAuth\Plugin\TwoFactorAuth\ModelTfa"/>
     </type>
-    <type name="Magento\TwoFactorAuth\Observer\ControllerActionPredispatch">
-        <plugin name="redmonks_userspecifictwofactorauth_before_requestconfig_email" type="RedMonks\UserSpecificTwoFactorAuth\Plugin\TwoFactorAuth\Observer\ControllerActionPredispatch"/>
-    </type>
 </config>

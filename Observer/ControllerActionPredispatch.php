@@ -1,17 +1,17 @@
 <?php
-namespace RedMonks\UserSpecificTwoFactorAuth\Plugin\TwoFactorAuth\Observer;
+namespace RedMonks\UserSpecificTwoFactorAuth\Observer;
 
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
 use Magento\Authorization\Model\UserContextInterface;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
-use Magento\Framework\Event\Observer;
 use Magento\Framework\UrlInterface;
 use Magento\TwoFactorAuth\Api\TfaInterface;
 use Magento\TwoFactorAuth\Api\TfaSessionInterface;
 use Magento\TwoFactorAuth\Model\UserConfig\HtmlAreaTokenVerifier;
-use Magento\TwoFactorAuth\Observer\ControllerActionPredispatch as BaseControllerActionPredispatch;
 
-class ControllerActionPredispatch
+class ControllerActionPredispatch implements ObserverInterface
 {
     /**
      * @var TfaInterface
@@ -59,12 +59,12 @@ class ControllerActionPredispatch
         $this->tokenManager = $tokenManager;
     }
 
-    public function aroundExecute(BaseControllerActionPredispatch $subject, callable $proceed, Observer $observer)
+    public function execute(Observer $observer)
     {
         $this->tokenManager->readConfigToken();
         if (in_array(
-                $observer->getEvent()->getData('request')->getFullActionName(),
-                array_merge($this->tfa->getAllowedUrls(), ['tfa_rtfa_requestprovider']), true
+            $observer->getEvent()->getData('request')->getFullActionName(),
+            $this->tfa->getAllowedUrls(), true
         )) {
             //Actions that are used for 2FA must remain accessible.
             return;
@@ -77,8 +77,6 @@ class ControllerActionPredispatch
                 $observer->getEvent()->getData('controller_action')
                     ->getResponse()
                     ->setRedirect($this->url->getUrl('tfa/rtfa/requestprovider'));
-            } else {
-                return $proceed($observer);
             }
         }
     }

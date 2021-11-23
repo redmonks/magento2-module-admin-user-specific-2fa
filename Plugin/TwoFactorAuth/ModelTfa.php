@@ -12,4 +12,11 @@ class ModelTfa
         }
         return $result;
     }
+    public function afterGetAllowedUrls(Tfa $subject, $result)
+    {
+        if (is_array($result)) {
+            $result = array_merge($result, ['tfa_rtfa_requestprovider']);
+        }
+        return $result;
+    }
 }

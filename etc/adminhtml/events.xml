@@ -3,4 +3,7 @@
     <event name="admin_user_save_after">
         <observer name="redMonks_userspecifictwofactorauth_admin_user_save_after" instance="RedMonks\UserSpecificTwoFactorAuth\Observer\AdminUserSaveAfter"/>
     </event>
+    <event name="controller_action_predispatch">
+        <observer name="redMonks_userspecifictwofactorauth_before_twofactor_auth_check" instance="RedMonks\UserSpecificTwoFactorAuth\Observer\ControllerActionPredispatch"/>
+    </event>
 </config>
