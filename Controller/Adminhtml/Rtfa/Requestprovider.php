@@ -52,7 +52,6 @@ class Requestprovider extends Action implements HttpGetActionInterface, HttpPost
             $data = $this->getRequest()->getParams();
             $this->configManager->setDefaultProvider($userId, $data['default_provider']);
             $this->_redirect('tfa/tfa/requestconfig');
-
         } else {
             return $this->resultFactory->create(ResultFactory::TYPE_PAGE);
         }

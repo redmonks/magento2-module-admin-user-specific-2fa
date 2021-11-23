@@ -7,8 +7,7 @@ class ModelTfa
 {
     public function afterGetUserProviders(Tfa $subject, $result, int $userId)
     {
-        $defaultUserProviderCode = $subject->getDefaultProviderCode($userId);
-        if ($defaultUserProviderCode) {
+        if ($defaultUserProviderCode = $subject->getDefaultProviderCode($userId)) {
             return [$subject->getProvider($defaultUserProviderCode)];
         }
         return $result;

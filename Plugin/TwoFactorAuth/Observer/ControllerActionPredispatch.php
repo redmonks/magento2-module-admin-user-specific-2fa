@@ -24,11 +24,6 @@ class ControllerActionPredispatch
     private $tfaSession;
 
     /**
-     * @var HtmlAreaTokenVerifier
-     */
-    private $tokenManager;
-
-    /**
      * @var ActionFlag
      */
     private $actionFlag;
@@ -43,56 +38,48 @@ class ControllerActionPredispatch
      */
     private $userContext;
 
+    /**
+     * @var HtmlAreaTokenVerifier
+     */
+    private $tokenManager;
+
     public function __construct(
         TfaInterface $tfa,
         TfaSessionInterface $tfaSession,
-        HtmlAreaTokenVerifier $tokenManager,
         ActionFlag $actionFlag,
         UrlInterface $url,
-        UserContextInterface $userContext
+        UserContextInterface $userContext,
+        HtmlAreaTokenVerifier $tokenManager
     ) {
         $this->tfa = $tfa;
         $this->tfaSession = $tfaSession;
-        $this->tokenManager = $tokenManager;
         $this->actionFlag = $actionFlag;
         $this->url = $url;
         $this->userContext = $userContext;
+        $this->tokenManager = $tokenManager;
     }
 
     public function aroundExecute(BaseControllerActionPredispatch $subject, callable $proceed, Observer $observer)
     {
-        $controllerAction = $observer->getEvent()->getData('controller_action');
-        $userId = $this->userContext->getUserId();
-        $accessGranted = $this->tfaSession->isGranted();
         $this->tokenManager->readConfigToken();
-
-        $fullActionName = $observer->getEvent()->getData('request')->getFullActionName();
-        $allowedUrls = array_merge($this->tfa->getAllowedUrls(), ['tfa_rtfa_requestprovider']);
-
-        if (in_array($fullActionName, $allowedUrls, true)) {
+        if (in_array(
+                $observer->getEvent()->getData('request')->getFullActionName(),
+                array_merge($this->tfa->getAllowedUrls(), ['tfa_rtfa_requestprovider']), true
+        )) {
             //Actions that are used for 2FA must remain accessible.
             return;
         }
 
-        if ($userId) {
+        if ($userId = $this->userContext->getUserId()) {
             $defaultProvider = $this->tfa->getDefaultProviderCode($userId);
-            if (!$accessGranted && (empty($defaultProvider) || is_null($defaultProvider))) {
-                return $this->redirect('tfa/rtfa/requestprovider', $controllerAction);
+            if (!$this->tfaSession->isGranted() && (empty($defaultProvider) || is_null($defaultProvider))) {
+                $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
+                $observer->getEvent()->getData('controller_action')
+                    ->getResponse()
+                    ->setRedirect($this->url->getUrl('tfa/rtfa/requestprovider'));
             } else {
                 return $proceed($observer);
             }
         }
-    }
-
-    /**
-     * Redirect user to given URL.
-     *
-     * @param string $url
-     * @return void
-     */
-    private function redirect(string $url, $controllerAction)
-    {
-        $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
-        $controllerAction->getResponse()->setRedirect($this->url->getUrl($url));
     }
 }
