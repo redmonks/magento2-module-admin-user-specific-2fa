@@ -2,15 +2,12 @@
 namespace RedMonks\UserSpecificTwoFactorAuth\Plugin\TwoFactorAuth\Observer;
 
 use Magento\Authorization\Model\UserContextInterface;
-use Magento\Backend\App\AbstractAction;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
-use Magento\Framework\AuthorizationInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\UrlInterface;
 use Magento\TwoFactorAuth\Api\TfaInterface;
 use Magento\TwoFactorAuth\Api\TfaSessionInterface;
-use Magento\TwoFactorAuth\Api\UserConfigRequestManagerInterface;
 use Magento\TwoFactorAuth\Model\UserConfig\HtmlAreaTokenVerifier;
 use Magento\TwoFactorAuth\Observer\ControllerActionPredispatch as BaseControllerActionPredispatch;
 
@@ -25,16 +22,6 @@ class ControllerActionPredispatch
      * @var TfaSessionInterface
      */
     private $tfaSession;
-
-    /**
-     * @var UserConfigRequestManagerInterface
-     */
-    private $configRequestManager;
-
-    /**
-     * @var AbstractAction|null
-     */
-    private $action;
 
     /**
      * @var HtmlAreaTokenVerifier
@@ -52,11 +39,6 @@ class ControllerActionPredispatch
     private $url;
 
     /**
-     * @var AuthorizationInterface
-     */
-    private $authorization;
-
-    /**
      * @var UserContextInterface
      */
     private $userContext;
@@ -64,20 +46,16 @@ class ControllerActionPredispatch
     public function __construct(
         TfaInterface $tfa,
         TfaSessionInterface $tfaSession,
-        UserConfigRequestManagerInterface $configRequestManager,
         HtmlAreaTokenVerifier $tokenManager,
         ActionFlag $actionFlag,
         UrlInterface $url,
-        AuthorizationInterface $authorization,
         UserContextInterface $userContext
     ) {
         $this->tfa = $tfa;
         $this->tfaSession = $tfaSession;
-        $this->configRequestManager = $configRequestManager;
         $this->tokenManager = $tokenManager;
         $this->actionFlag = $actionFlag;
         $this->url = $url;
-        $this->authorization = $authorization;
         $this->userContext = $userContext;
     }
 
