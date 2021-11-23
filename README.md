@@ -9,3 +9,7 @@ Using this extension you can set any specific enabled 2FA provider for any user.
 Select any specific user, For whom you want to set the default 2FA. Now from the left tab you can select 2FA and set default 2FA provider for respective user.
 
 ![2FA Default Provider Option](https://raw.githubusercontent.com/sanchit-redmonks/repo-images/master/magento2-module-admin-user-specific-2fa/2FA-Default.png)
+
+## Installation
+
+> composer require redmonks/module-user-specific-two-factor-auth
